@@ -132,3 +132,5 @@ dist
 config/error_log/*
 package-lock.json
 config/error_log/
+
+.idea

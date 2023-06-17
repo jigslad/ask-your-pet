@@ -1,4 +1,4 @@
-const winston = require('ask-your-pet/helpers/winston');
+const winston = require('winston');
 const config = require('../config/winston');
 
 const level = () => {

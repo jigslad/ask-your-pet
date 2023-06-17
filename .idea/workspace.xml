@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="243a7841-521d-480f-8f48-30e6302e968a" name="Changes" comment="odi meter 1000 added">
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+    <list default="true" id="243a7841-521d-480f-8f48-30e6302e968a" name="Changes" comment="fix issue">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -142,14 +143,7 @@
       <workItem from="1683945895451" duration="1129000" />
       <workItem from="1686103212578" duration="2523000" />
       <workItem from="1686962230752" duration="681000" />
-      <workItem from="1686963393437" duration="1121000" />
-    </task>
-    <task id="LOCAL-00117" summary="Company delete done">
-      <created>1657952061089</created>
-      <option name="number" value="00117" />
-      <option name="presentableId" value="LOCAL-00117" />
-      <option name="project" value="LOCAL" />
-      <updated>1657952061089</updated>
+      <workItem from="1686963393437" duration="1982000" />
     </task>
     <task id="LOCAL-00118" summary="issue fixed.">
       <created>1657962601962</created>
@@ -487,7 +481,14 @@
       <option name="project" value="LOCAL" />
       <updated>1683561790826</updated>
     </task>
-    <option name="localTasksCounter" value="166" />
+    <task id="LOCAL-00166" summary="fix issue">
+      <created>1686966877351</created>
+      <option name="number" value="00166" />
+      <option name="presentableId" value="LOCAL-00166" />
+      <option name="project" value="LOCAL" />
+      <updated>1686966877352</updated>
+    </task>
+    <option name="localTasksCounter" value="167" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -514,7 +515,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="IB-154" />
+                        <option value="main" />
                       </list>
                     </value>
                   </entry>
@@ -530,7 +531,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="User Vehicle Added." />
     <MESSAGE value="user Vehicle issue fix" />
     <MESSAGE value="issue fixed. with user vehicle" />
     <MESSAGE value="Company filter fixed." />
@@ -555,7 +555,8 @@
     <MESSAGE value="company duplicate issue ficed" />
     <MESSAGE value="device added vehicle number" />
     <MESSAGE value="odi meter 1000 added" />
-    <option name="LAST_COMMIT_MESSAGE" value="odi meter 1000 added" />
+    <MESSAGE value="fix issue" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix issue" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
 </project>

@@ -4,10 +4,9 @@ const apiUserController = require('../controller/user.controller');
 module.exports = (function () {
 // User Controller Route using HOST URL + /app-config/user
     app.post("/add", ensureAuthorized, apiUserController.addUser);//addUser
-    app.post("/view", ensureAuthorized, apiUserController.viewUser);//viewUser
-    app.post("/view/:id", ensureAuthorized, apiUserController.viewUser);//viewUser
+    app.post("/list", ensureAuthorized, apiUserController.listUsers);//viewUser
+    app.post("/:id", ensureAuthorized, apiUserController.viewUserById);//viewUser by id
     app.post("/update", ensureAuthorized, apiUserController.updateUser);//updateUser
     app.post("/delete", ensureAuthorized, apiUserController.deleteUser);//deleteUser
-    app.post("/view-by-company-branch", ensureAuthorized, apiUserController.viewUserById);
     return app;
 })();

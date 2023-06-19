@@ -1,26 +1,29 @@
+const user = require("./user.route");
 const app = require('express').Router();
 module.exports = (function () {
     // Authentication routes use prefix /api/v1
     const auth = require('./auth.route');
     app.use('/auth', auth);
 
-    const location = require('./location.route');
-    app.use('/location', location);
-
-    // User
+    // Users
     const user = require('./user.route');
     app.use('/user', user);
 
-    //Module
+    // Exports
+    const exports = require('./export.route');
+    app.use('/export', exports);
+
+    //Modules
     const DModule = require('./module.route');
     app.use('/module', DModule);
 
-    //Role
+    //Roles
     const role = require('./role.route');
     app.use('/role', role);
 
-    const user_profile = require('./user-profile.route');
-    app.use('/user-profile', user_profile);
+    //Export Profiles
+    const exportProfile = require('./exportProfile.route');
+    app.use('/exportProfile', exportProfile);
 
     return app;
 })();

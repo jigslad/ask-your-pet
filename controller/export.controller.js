@@ -2,9 +2,9 @@ const GLOBAL = require('../config/global_files');
 const COMMON = GLOBAL.COMMON;
 const RES_MSG = GLOBAL.RES_MSG;
 const moment = require('moment');
-const userActivityService = require("../services/userActivity");
+const exportActivityService = require("../services/exportActivity");
 module.exports = {
-    addUser: async (req, res) => {//file upload pending we will implement frontend time
+    addExport: async (req, res) => {//file upload pending we will implement frontend time
         try {
             const check = "SELECT * FROM user WHERE IsDeleted='0' and UserName='" + req.body.UserName + "'";
             let checkData = await COMMON.executeQuery(check);
@@ -44,7 +44,7 @@ module.exports = {
             });
         }
     },
-    listUsers: async (req, res) => {
+    listExports: async (req, res) => {
         try {
 
             let filter = "";
@@ -96,7 +96,7 @@ module.exports = {
             });
         }
     },
-    viewUserById: async (req, res) => {
+    viewExportById: async (req, res) => {
         try {
 
             let query = "Select UserId,UserName from user where" + " BranchId=" + req.body.BranchId + "" + " and IsDeleted=0 and IsActive=1";
@@ -120,7 +120,7 @@ module.exports = {
             });
         }
     },
-    updateUser: async (req, res) => {
+    updateExport: async (req, res) => {
         try {
             const {
                 BranchId,
@@ -183,7 +183,7 @@ module.exports = {
         }
 
     },
-    deleteUser: async (req, res) => {
+    deleteExport: async (req, res) => {
         try {
             let cureentDate = moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
             let reqData = req.body;
@@ -191,7 +191,7 @@ module.exports = {
 
             const updateQuery = "update user set IsDeleted=? where UserId=?";
             let update = await COMMON.executeDataQuery(updateQuery, updateData);
-            await userActivityService.userActivity(req.UserId, cureentDate, 1, "User Deleted");
+            await exportActivityService.exportActivity(req.UserId, cureentDate, 1, "User Deleted");
 
             if (update.status === 1) {
                 if (update.data.affectedRows === 1) {

@@ -4,11 +4,10 @@ module.exports = {
         let data;
         try {
             let insertData = [UserId, ActivityDateTime, IsDeleted, ActivityDescription]
-            let insertQry = 'Insert into useractivity(`UserId`, `ActivityDateTime`, `IsDeleted`,ActivityDescription) values(?,?,?,?)';
+            let insertQry = 'Insert into user_activity(`UserId`, `ActivityDateTime`, `IsDeleted`,ActivityDescription) values(?,?,?,?)';
             let userActivity = commonFunction.executeDataQuery(insertQry, insertData)
             return {status: 1, data: userActivity};
-        }
-        catch (err) {
+        } catch (err) {
             return {status: 0, data: err};
         }
     },

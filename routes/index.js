@@ -2,8 +2,8 @@ const user = require("./user.route");
 const app = require('express').Router();
 module.exports = (function () {
     // Authentication routes use prefix /api/v1
-    const auth = require('./auth.route');
-    app.use('/auth', auth);
+    const authenticate = require('./authenticate.route');
+    app.use('/authenticate', authenticate);
 
     // Users
     const user = require('./user.route');

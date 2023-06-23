@@ -22,12 +22,10 @@ let transporter = nodemailer.createTransport({
 module.exports = {
     userLogin : async (req, res) => {
         try {
-            const {UserName, Password, PlayerId} = req.body;
+            const {UserName, Password} = req.body;
 
             if (UserName && Password) {
-                const qry = "SELECT u.*,t.TimezoneName,TimezoneValue,b.CompanyId as CompanyId FROM user u "
-                    + " LEFT JOIN timezone t ON t.TimezoneId = u.TimezoneId"
-                    + " LEFT JOIN branch b ON u.BranchId = b.BranchId"
+                const qry = "SELECT * FROM user"
                     + " WHERE UserName = '" + UserName + "'";
 
                 con.query(qry, async function (error, results, fields) {
@@ -45,10 +43,6 @@ module.exports = {
                                 LastName: results[0].LastName,
                                 UserName: results[0].UserName,
                                 Email: results[0].Email,
-                                UserProfileId: results[0].UserProfileId,
-                                RoleId: results[0].RoleId,
-                                CompanyId: results[0].CompanyId,
-                                BranchId: results[0].BranchId,
                                 TimezoneValue: results[0].TimezoneValue,
                                 TimezoneName: results[0].TimezoneName
                             },
@@ -57,7 +51,6 @@ module.exports = {
                                 algorithm: 'RS256',
                                 expiresIn: '365d'
                             });
-                        await savePlayerId(results[0].UserId, PlayerId)
                         return res.status(200).json({
                             status: 1,
                             token: JWTToken,
@@ -355,20 +348,4 @@ module.exports = {
             return res.status(401).json({status: 0, data: null, message: 'Please enter Username and Passwords!'});
         }
     },
-}
-async function savePlayerId(UserId, PlayerId) {
-    if (UserId && PlayerId) {
-        let qry = "SELECT * FROM user_playerids WHERE UserId = '" + UserId + "' AND IsDeleted = 0";
-        await con.query(qry, async function (error, results, fields) {
-            if (results.length > 0) {
-                const qry = "UPDATE user_playerids SET PlayerId='" + PlayerId + "' WHERE UserId='" + UserId + "'AND IsDeleted = 0";
-                await con.query(qry, function (error, results, fields) {
-
-                });
-            } else {
-                let insUpdQry = "INSERT INTO `user_playerids`(`UserId`,`PlayerId`,`IsActive` ,`IsDeleted`) VALUES (" + UserId + ",'" + PlayerId + "',1,0)";
-                let update = await COMMON.executeQuery(insUpdQry);
-            }
-        });
-    }
 }

@@ -4,22 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="243a7841-521d-480f-8f48-30e6302e968a" name="Changes" comment="fix issue">
-      <change afterPath="$PROJECT_DIR$/controller/export.controller.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/routes/export.route.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/services/export.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/services/userActivity.js" afterDir="false" />
+    <list default="true" id="243a7841-521d-480f-8f48-30e6302e968a" name="Changes" comment="init commit for export and user">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/db/db_table.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/controller/location.controller.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/controller/user-profile.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/controller/exportProfile.controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controller/user.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/controller/user.controller.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controller/auth.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/controller/auth.controller.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controller/parking.controller.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/auth.route.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/authenticate.route.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/location.route.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/user-profile.route.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/exportProfile.route.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/user.route.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/user.route.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/services/user.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/useractivity.js" beforeDir="false" afterPath="$PROJECT_DIR$/services/exportActivity.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,12 +25,20 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="UPDATE_TYPE" value="REBASE" />
   </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/routes/export.route.js" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/routes/exportProfile.route.js" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/routes/index.js" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/routes/module.route.js" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/routes/role.route.js" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/routes/user.route.js" root0="FORCE_HIGHLIGHTING" />
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProblemsViewState">
     <option name="autoscrollToSource" value="true" />
-    <option name="selectedTabId" value="CurrentFile" />
+    <option name="selectedTabId" value="ProjectErrors" />
     <option name="sortByName" value="true" />
   </component>
   <component name="ProjectId" id="29WPEyOQKovxOFfqP4dme8LJ4TF" />
@@ -55,14 +53,14 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
     "javascript.nodejs.core.library.configured.version": "16.15.1",
-    "javascript.nodejs.core.library.typings.version": "16.11.56",
+    "javascript.nodejs.core.library.typings.version": "16.18.36",
     "last_opened_file_path": "/Users/jigar/Documents/GitHub/askyourpet-node/routes",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable",
+    "settings.editor.selected.configurable": "configurable.group.build",
     "ts.external.directory.path": "/Applications/WebStorm.app/Contents/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external",
     "vue.rearranger.settings.migration": "true"
   }
@@ -160,14 +158,8 @@
       <workItem from="1686103212578" duration="2523000" />
       <workItem from="1686962230752" duration="681000" />
       <workItem from="1686963393437" duration="2807000" />
-      <workItem from="1686970093312" duration="3378000" />
-    </task>
-    <task id="LOCAL-00120" summary="java server changed to report.orbitoinfotech.com">
-      <created>1658162240329</created>
-      <option name="number" value="00120" />
-      <option name="presentableId" value="LOCAL-00120" />
-      <option name="project" value="LOCAL" />
-      <updated>1658162240330</updated>
+      <workItem from="1686970093312" duration="4407000" />
+      <workItem from="1687191991942" duration="2423000" />
     </task>
     <task id="LOCAL-00121" summary="console log removed">
       <created>1658209905769</created>
@@ -505,7 +497,14 @@
       <option name="project" value="LOCAL" />
       <updated>1686967013137</updated>
     </task>
-    <option name="localTasksCounter" value="169" />
+    <task id="LOCAL-00169" summary="init commit for export and user">
+      <created>1687191472572</created>
+      <option name="number" value="00169" />
+      <option name="presentableId" value="LOCAL-00169" />
+      <option name="project" value="LOCAL" />
+      <updated>1687191472573</updated>
+    </task>
+    <option name="localTasksCounter" value="170" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -527,6 +526,11 @@
         <entry key="MAIN">
           <value>
             <State>
+              <option name="CUSTOM_BOOLEAN_PROPERTIES">
+                <map>
+                  <entry key="Show.Git.Branches" value="true" />
+                </map>
+              </option>
               <option name="FILTERS">
                 <map>
                   <entry key="branch">
@@ -548,7 +552,6 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="user Vehicle issue fix" />
     <MESSAGE value="issue fixed. with user vehicle" />
     <MESSAGE value="Company filter fixed." />
     <MESSAGE value="User Vehicle added spareated" />
@@ -573,7 +576,8 @@
     <MESSAGE value="device added vehicle number" />
     <MESSAGE value="odi meter 1000 added" />
     <MESSAGE value="fix issue" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix issue" />
+    <MESSAGE value="init commit for export and user" />
+    <option name="LAST_COMMIT_MESSAGE" value="init commit for export and user" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
 </project>

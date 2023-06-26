@@ -4,9 +4,9 @@ const RES_MSG = GLOBAL.RES_MSG;
 const moment = require('moment');
 const userActivityService = require("../services/userActivity");
 module.exports = {
-    addUser: async (req, res) => {//file upload pending we will implement frontend time
+    registerUser: async (req, res) => {//file upload pending we will implement frontend time
         try {
-            const check = "SELECT * FROM user WHERE IsDeleted='0' and UserName='" + req.body.UserName + "'";
+            const check = "SELECT * FROM user WHERE IsDeleted='0' and( email='" + req.body.email + "' or mobile='" + req.body.mobile + "')";
             let checkData = await COMMON.executeQuery(check);
             if (checkData.status === 1) {
 
@@ -15,8 +15,8 @@ module.exports = {
                     if (!reqData.ParentCompanyId) {
                         reqData.ParentCompanyId = 0;
                     }
-                    let insertData = [reqData.BranchId, reqData.RoleId, reqData.UserProfileId, reqData.FirstName, reqData.LastName, reqData.UserName, reqData.Password, reqData.Email, reqData.Phone, reqData.TimezoneId, reqData.Remarks, reqData.DateFormat, reqData.TimeFormat, reqData.IsActive]
-                    let insertQuery = 'INSERT INTO `user`(`BranchId`, `RoleId`, `UserProfileId`, `FirstName`, `LastName`, `UserName`, `Password`, `Email`, `Phone`, `TimezoneId`, `Remarks`, `DateFormat`, `TimeFormat`, `IsActive`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
+                    let insertData = [reqData.firstName, reqData.lastName, reqData.email, reqData.mobile, reqData.password]
+                    let insertQuery = 'INSERT INTO `user`(`first_name`,`last_name`, `email`, `mobile`, `password`) VALUES (?,?,?,?,?)';
 
                     let insert = await COMMON.executeDataQuery(insertQuery, insertData);
                     if (insert.status === 1) {

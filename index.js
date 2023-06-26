@@ -13,7 +13,7 @@ let io = require("socket.io")(http);
 
 const utility = require('./helpers/utility')
 app.use(cors({origin: '*'}));
-app.use(cors());
+// app.use(cors());
 
 app.use(logger('combined'));
 app.use(express.static(__dirname + '/'));

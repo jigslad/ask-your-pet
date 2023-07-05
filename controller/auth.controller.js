@@ -25,10 +25,12 @@ module.exports = {
             const {UserName, Password} = req.body;
 
             if (UserName && Password) {
-                const qry = `SELECT * FROM user WHERE email = ${UserName} or mobile = ${UserName}`;
+                const qry = `SELECT * FROM user WHERE email = '${UserName}' or mobile = '${UserName}' AND  isActived= 1 AND isDeleted=0`;
+                console.log(qry)
                 con.query(qry, async function (error, results, fields) {
+                    console.log(results)
                     if (results.length > 0) {
-                        if (results[0].Password !== Password) {
+                        if (results[0].password !== Password) {
                             return res.status(200).json({
                                 status: 0,
                                 data: null,

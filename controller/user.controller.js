@@ -15,6 +15,7 @@ module.exports = {
                     if (!reqData.ParentCompanyId) {
                         reqData.ParentCompanyId = 0;
                     }
+                    // ZOHO API FOR USER REGISTER ->GET ZOHOID
                     let insertData = [reqData.firstName, reqData.lastName, reqData.email, reqData.mobile, reqData.password]
                     let insertQuery = 'INSERT INTO `user`(`first_name`,`last_name`, `email`, `mobile`, `password`) VALUES (?,?,?,?,?)';
 
@@ -59,7 +60,6 @@ module.exports = {
 
             if (reqBody.BranchId != null) {
                 filter += " and user.BranchId = " + reqBody.BranchId + "";
-                childBranch = reqBody.BranchId;
             } else {
                 childBranch = await branchService.getChildBranch(childComapny, req.LoginRoleId);
                 filter += " and user.BranchId IN (" + childBranch + ")";

@@ -12,7 +12,11 @@ let http = require("http").Server(app);
 let io = require("socket.io")(http);
 
 const utility = require('./helpers/utility')
-app.use(cors({origin: '*'}));
+app.use(cors({
+    origin: 'http://localhost:4000',
+    credentials: true,
+    optionSuccessStatus: 200,
+}));
 // app.use(cors());
 
 app.use(logger('combined'));
@@ -21,9 +25,9 @@ app.use(express.static(__dirname + "/public"));
 
 
 app.use(function (req, res, next) {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'content-type');
+    // res.setHeader('Access-Control-Allow-Origin', '*');
+    // res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    // res.setHeader('Access-Control-Allow-Headers', 'content-type');
     httpContext.set('url', req.originalUrl);
     httpContext.set('clientIp', req.headers.host);
     httpContext.set('reqId', uuid.v4());

@@ -7,7 +7,7 @@ const nodemailer = require('nodemailer');
 const jwt = require('jsonwebtoken');
 const ejs = require("ejs");
 const fs = require('fs');
-const privateKey = fs.readFileSync(process.cwd() +'/config/private.key');
+const privateKey = fs.readFileSync(process.cwd() + '/config/private.key');
 
 let transporter = nodemailer.createTransport({
     host: process.env.Gmail_Host, port: process.env.Gmail_Port, secure: process.env.Gmail_Method,
@@ -20,17 +20,15 @@ let transporter = nodemailer.createTransport({
 	status 2 = Please enter Username and Password!'
 */
 module.exports = {
-    userLogin : async (req, res) => {
+    userLogin: async (req, res) => {
         try {
             const {UserName, Password} = req.body;
 
             if (UserName && Password) {
-                const qry = `SELECT * FROM user WHERE email = '${UserName}' or mobile = '${UserName}' AND  isActived= 1 AND isDeleted=0`;
-                console.log(qry)
+                const qry = `SELECT * FROM user WHERE email = ${UserName} or mobile = ${UserName}`;
                 con.query(qry, async function (error, results, fields) {
-                    console.log(results)
                     if (results.length > 0) {
-                        if (results[0].password !== Password) {
+                        if (results[0].Password !== Password) {
                             return res.status(200).json({
                                 status: 0,
                                 data: null,
@@ -75,7 +73,65 @@ module.exports = {
             });
         }
     },
-    refreshToken : async (req, res) => {
+
+    exportLogin: async (req, res) => {
+        try {
+            const {UserName, Password} = req.body;
+
+            if (UserName && Password) {
+                const qry = "SELECT * FROM user"
+                    + " WHERE UserName = '" + UserName + "'";
+
+                con.query(qry, async function (error, results, fields) {
+                    if (results.length > 0) {
+                        if (results[0].Password !== Password) {
+                            return res.status(200).json({
+                                status: 0,
+                                data: null,
+                                message: GLOBAL.STATIC.LOGIN.user_pwd_incorrect
+                            });
+                        }
+                        const JWTToken = jwt.sign({
+                                UserId: results[0].UserId,
+                                FirstName: results[0].FirstName,
+                                LastName: results[0].LastName,
+                                UserName: results[0].UserName,
+                                Email: results[0].Email,
+                                TimezoneValue: results[0].TimezoneValue,
+                                TimezoneName: results[0].TimezoneName
+                            },
+                            privateKey,
+                            {
+                                algorithm: 'RS256',
+                                expiresIn: '365d'
+                            });
+                        return res.status(200).json({
+                            status: 1,
+                            token: JWTToken,
+                            message: 'Login Successfully.'
+                        });
+                    } else {
+                        return res.status(200).json({
+                            status: 0,
+                            data: null,
+                            message: GLOBAL.STATIC.LOGIN.user_pwd_incorrect
+                        });
+                    }
+                });
+            } else {
+
+                return res.status(400).json({status: 0, data: null, message: 'Please enter Username and Password!'});
+            }
+        } catch (error) {
+            GLOBAL.COMMON.storeErrorLog(e + "", __filename.slice(__dirname.length + 1));
+            return res.status(200).json({
+                status: GLOBAL.RES_MSG.CATCH_CODE,
+                message: GLOBAL.RES_MSG.CATCH_MSG,
+                data: error
+            });
+        }
+    },
+    refreshToken: async (req, res) => {
         const Email = req.body.Email;
 
         if (Email) {
@@ -121,7 +177,7 @@ module.exports = {
             return res.status(404).json({status: 0, data: [], message: STATIC.USER_NOT_EXIST});
         }
     },
-    refreshFcm : async (req, res) => {
+    refreshFcm: async (req, res) => {
         let uuid = req.body.uuid;
         let fcm = req.body.fcm;
         if (uuid && fcm) {
@@ -150,7 +206,7 @@ module.exports = {
 
 
     },
-    logout : async (req, res) => {
+    logout: async (req, res) => {
         let uuid = req.body.uuid;
         if (uuid) {
             let checkQry = 'select * from fcm_mst where uuid=?';
@@ -169,7 +225,71 @@ module.exports = {
             return res.status(404).json({status: 1, data: [], message: 'UUID not exist'});
         }
     },
-    forgotPassword : async (req, res) => {
+    getAllModule: async (req, res) => {
+        try {
+            let reqData = req.body;
+            let query = "SELECT `ModuleId` AS id,`Name`AS title,`PageLink` AS url,`Icon` AS icon,`ParentId`,IsActive"
+                + " FROM `modules` WHERE `IsDeleted`=0 and `IsActive`=1 and"
+                + " `ModuleId` IN (Select `ModuleId` from `userprofileaccess`"
+                + " where `IsDeleted`=0  and `UserProfileId` = " + req.UserProfileId
+                + "  and (`FullAccess`=1 OR `InsertAccess`=1 OR `UpdateAccess`=1 OR `DeleteAccess`=1 OR `ViewAccess`=1 )) ORDER BY `SortOrder` ASC";
+            let result = await COMMON.executeQuery(query);
+            if (result.status === 1) {
+                if (result.data.length > 0) {
+                    return res.status(200).json({status: 1, data: result.data, message: 'Success'});
+                } else {
+                    return res.status(200).json({status: 0, data: null, message: 'Data Not Found'});
+                }
+            } else {
+                return res.status(200).json({status: 0, data: null, message: 'Something Went Wrong!!'});
+            }
+        } catch (e) {
+            return res.status(200).json({status: 0, data: e, message: 'Something Went Wrong!!'});
+        }
+    },
+    getModuleAccess: async (req, res) => {
+
+        let Full = false;
+        let Insert = false;
+        let Update = false;
+        let Delete = false;
+        let View = false;
+        let query = "select b.* from modules a,userprofileaccess b where"
+            + " a.ModuleId=b.ModuleId and UserProfileId='" + req.UserProfileId + "'"
+            + " and PageLink='" + req.body.PageLink + "'";
+        con.query(query, function (error, results, fields) {
+
+            if (error) {
+                console.log(error);
+            } else {
+
+                let resultsData = {
+                    FullAccess: Full,
+                    InsertAccess: Insert,
+                    UpdateAccess: Update,
+                    DeleteAccess: Delete,
+                    ViewAccess: View
+                };
+                if (results.length !== 0) {
+                    let rData = results[0] !== 0;
+                    Full = rData.FullAccess !== 0;
+                    Insert = rData.InsertAccess !== 0;
+                    Update = rData.UpdateAccess !== 0;
+                    Delete = rData.DeleteAccess !== 0;
+                    View = rData.ViewAccess !== 0;
+                    resultsData = {
+                        FullAccess: Full,
+                        InsertAccess: Insert,
+                        UpdateAccess: Update,
+                        DeleteAccess: Delete,
+                        ViewAccess: View
+                    };
+                }
+                return res.status(200).json({status: 1, data: resultsData, message: 'Success'});
+            }
+        });
+    },
+    forgotPassword: async (req, res) => {
         const {Email} = req.body;
         const qry = "SELECT u.*,t.TimezoneName,TimezoneValue FROM user u "
             + " LEFT JOIN timezone t ON t.TimezoneId = u.TimezoneId"
@@ -215,7 +335,7 @@ module.exports = {
             }
         });
     },
-    changePassword : async (req, res) => {
+    changePassword: async (req, res) => {
 
         const query = "SELECT u.*,t.TimezoneName,TimezoneValue FROM user u "
             + " LEFT JOIN timezone t ON t.TimezoneId = u.TimezoneId"
@@ -244,6 +364,42 @@ module.exports = {
             }
         } else {
             return res.status(200).json({status: 0, data: null, message: 'Something went wrong!!'});
+        }
+    },
+    resetPassword: async (req, res) => {
+        const {UserName, Password, newPassword} = req.body;
+        if (UserName && Password && newPassword) {
+            const qry = "SELECT u.*,t.TimezoneName,TimezoneValue FROM user u "
+                + " LEFT JOIN timezone t ON t.TimezoneId = u.TimezoneId"
+                + " WHERE UserName = '" + UserName + "' AND Password = '" + Password + "'";
+
+            con.query(qry, async function (error, results, fields) {
+                if (results.length > 0) {
+                    const updateQuery = "update user set Password='" + newPassword + "' WHERE UserName = '" + UserName + "'";
+                    let updateResult = await COMMON.executeQuery(updateQuery);
+                    if (updateResult.status === 1) {
+                        if (updateResult.data.affectedRows) {
+                            return res.status(200).json({
+                                status: 1,
+                                data: result.data,
+                                message: 'Password Change successfully.'
+                            });
+                        } else {
+                            return res.status(200).json({status: 0, data: null, message: 'Something went wrong!!'});
+                        }
+                    } else {
+                        return res.status(200).json({status: 0, data: null, message: 'Something went wrong!!'});
+                    }
+                } else {
+                    return res.status(401).json({
+                        status: 0,
+                        data: null,
+                        message: GLOBAL.STATIC.LOGIN.user_oldpwd_incorrect
+                    });
+                }
+            });
+        } else {
+            return res.status(401).json({status: 0, data: null, message: 'Please enter Username and Passwords!'});
         }
     },
 }

@@ -6,7 +6,7 @@ const exportActivityService = require("../services/exportActivity");
 module.exports = {
     addExport: async (req, res) => {//file upload pending we will implement frontend time
         try {
-            const check = "SELECT * FROM user WHERE IsDeleted='0' and UserName='" + req.body.UserName + "'";
+            const check = "SELECT * FROM expert WHERE IsDeleted='0' and email='" + req.body.email + "'";
             let checkData = await COMMON.executeQuery(check);
             if (checkData.status === 1) {
 
@@ -15,27 +15,32 @@ module.exports = {
                     if (!reqData.ParentCompanyId) {
                         reqData.ParentCompanyId = 0;
                     }
-                    let insertData = [reqData.BranchId, reqData.RoleId, reqData.UserProfileId, reqData.FirstName, reqData.LastName, reqData.UserName, reqData.Password, reqData.Email, reqData.Phone, reqData.TimezoneId, reqData.Remarks, reqData.DateFormat, reqData.TimeFormat, reqData.IsActive]
-                    let insertQuery = 'INSERT INTO `user`(`BranchId`, `RoleId`, `UserProfileId`, `FirstName`, `LastName`, `UserName`, `Password`, `Email`, `Phone`, `TimezoneId`, `Remarks`, `DateFormat`, `TimeFormat`, `IsActive`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
+                    // REGISTER ZOHO USER
+                    let insertData = [reqData.firstName, reqData.lastName, reqData.email, reqData.mobile, reqData.password, reqData.language, reqData.DOB, reqData.expertiseIn, reqData.nickName, reqData.yearsOfExperience, reqData.fees, reqData.prefTime, reqData.panCard, reqData.aadharCard, reqData.photo, reqData.certificate]
+                    let insertQuery = 'INSERT INTO `expert`(`firstName`, `lastName`, `email`, `mobile`, `password`, `language`, `DOB`, `expertiseIn`,`nickName`, `yearsOfExperience`,`fees`,`prefTime`,`panCard`,`aadharCard`,`photo`,`certificate`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
 
                     let insert = await COMMON.executeDataQuery(insertQuery, insertData);
                     if (insert.status === 1) {
                         return res.status(200).json({
-                            status: 1, data: null, message: GLOBAL.RES_MSG.ADD_MSG.replace('XX', 'User')
+                            status: 1, data: null, message: GLOBAL.RES_MSG.ADD_MSG.replace('XX', 'Expert')
                         });
                     } else {
                         return res.status(200).json({
-                            status: 0, data: null, message: RES_MSG.ERROR.replace('XX', 'add user')
+                            status: 0, data: null, message: RES_MSG.ERROR.replace('XX', 'add Expert')
                         });
                     }
 
                 } else {
                     return res.status(200).json({
-                        status: 0, data: null, message: GLOBAL.RES_MSG.EXIST.replace('XX', 'User')
+                        status: 0, data: null, message: GLOBAL.RES_MSG.EXIST.replace('XX', 'Expert')
                     });
                 }
             } else {
-                return res.status(200).json({status: 0, data: null, message: RES_MSG.ERROR.replace('XX', 'add user')});
+                return res.status(200).json({
+                    status: 0,
+                    data: null,
+                    message: RES_MSG.ERROR.replace('XX', 'add Expert')
+                });
             }
         } catch (e) {
             GLOBAL.COMMON.storeErrorLog(e + "", __filename.slice(__dirname.length + 1));
@@ -59,7 +64,6 @@ module.exports = {
 
             if (reqBody.BranchId != null) {
                 filter += " and user.BranchId = " + reqBody.BranchId + "";
-                childBranch = reqBody.BranchId;
             } else {
                 childBranch = await branchService.getChildBranch(childComapny, req.LoginRoleId);
                 filter += " and user.BranchId IN (" + childBranch + ")";
@@ -80,7 +84,7 @@ module.exports = {
             if (result.status === 1) {
                 if (result.data.length > 0) {
                     return res.status(200).json({
-                        status: 1, data: result.data, message: RES_MSG.DATA_LIST.replace('XX', 'User ')
+                        status: 1, data: result.data, message: RES_MSG.DATA_LIST.replace('XX', 'Expert ')
                     });
                 } else {
                     return res.status(200).json({status: 0, data: null, message: RES_MSG.NO_DATA});
@@ -99,13 +103,13 @@ module.exports = {
     viewExportById: async (req, res) => {
         try {
 
-            let query = "Select UserId,UserName from user where" + " BranchId=" + req.body.BranchId + "" + " and IsDeleted=0 and IsActive=1";
+            let query = "Select ExpertId,ExpertName from user where" + " BranchId=" + req.body.BranchId + "" + " and IsDeleted=0 and IsActive=1";
 
             let result = await COMMON.executeQuery(query);
             if (result.status === 1) {
                 if (result.data.length > 0) {
                     return res.status(200).json({
-                        status: 1, data: result.data, message: RES_MSG.DATA_LIST.replace('XX', 'User ')
+                        status: 1, data: result.data, message: RES_MSG.DATA_LIST.replace('XX', 'Expert ')
                     });
                 } else {
                     return res.status(200).json({status: 0, data: null, message: RES_MSG.NO_DATA});
@@ -152,7 +156,7 @@ module.exports = {
                         if (update.status === 1) {
                             if (update.data.affectedRows === 1) {
                                 return res.status(200).json({
-                                    status: 1, data: null, message: 'User Updated Successfully.'
+                                    status: 1, data: null, message: RES_MSG.UPD_MSG.replace('XX', 'Expert')
                                 });
                             } else {
                                 return res.status(200).json({
@@ -168,10 +172,14 @@ module.exports = {
                         });
                     }
                 } else {
-                    return res.status(200).json({status: 0, data: null, message: 'User Already Exist!'});
+                    return res.status(200).json({status: 0, data: null, message: 'Expert Already Exist!'});
                 }
             } else {
-                return res.status(200).json({status: 0, data: null, message: RES_MSG.NOT_EXIST.replace('XX', 'User')});
+                return res.status(200).json({
+                    status: 0,
+                    data: null,
+                    message: RES_MSG.NOT_EXIST.replace('XX', 'Expert')
+                });
             }
 
         } catch (e) {
@@ -191,18 +199,22 @@ module.exports = {
 
             const updateQuery = "update user set IsDeleted=? where UserId=?";
             let update = await COMMON.executeDataQuery(updateQuery, updateData);
-            await exportActivityService.exportActivity(req.UserId, cureentDate, 1, "User Deleted");
+            await exportActivityService.exportActivity(req.UserId, cureentDate, 1, "Expert Deleted");
 
             if (update.status === 1) {
                 if (update.data.affectedRows === 1) {
                     return res.status(200).json({
-                        status: 1, data: null, message: RES_MSG.DLT_MSG.replace('XX', 'User')
+                        status: 1, data: null, message: RES_MSG.DLT_MSG.replace('XX', 'Expert')
                     });
                 } else {
-                    return res.status(200).json({status: 0, data: null, message: RES_MSG.ERROR.replace('XX', 'User')});
+                    return res.status(200).json({
+                        status: 0,
+                        data: null,
+                        message: RES_MSG.ERROR.replace('XX', 'Expert')
+                    });
                 }
             } else {
-                return res.status(200).json({status: 0, data: null, message: RES_MSG.ERROR.replace('XX', 'User')});
+                return res.status(200).json({status: 0, data: null, message: RES_MSG.ERROR.replace('XX', 'Expert')});
             }
         } catch (e) {
             GLOBAL.COMMON.storeErrorLog(e + "", __filename.slice(__dirname.length + 1));

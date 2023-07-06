@@ -243,10 +243,8 @@ module.exports = {
 
             let getQuery = "select * from userprofile where UserProfileId=" + req.body.UserProfileId;
             let result = await COMMON.executeQuery(getQuery);
-            let cData = [];
             if (result.status === 1) {
                 if (result.data.length > 0) {
-                    cData.push(result.data);
                     let getFQuery = "Select a.ModuleId,Name,`FullAccess`,`InsertAccess`,`UpdateAccess`,`DeleteAccess`,`ViewAccess` from userprofileaccess a "
                         + " LEFT JOIN modules b ON a.ModuleId=b.ModuleId "
                         + " where a.IsDeleted=0 and UserProfileId=" + req.body.UserProfileId + " and b.IsActive=1 and b.IsDeleted=0";
